@@ -1,11 +1,21 @@
 package mycode.flashwork2.employerProfile;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import mycode.flashwork2.jobs.models.Job;
 import mycode.flashwork2.users.models.User;
 
 import java.util.List;
 
+@Entity // OBLIGATORIU: Aceasta transformă clasa în entitate JPA
+@Table(name = "employer_profiles")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployerProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

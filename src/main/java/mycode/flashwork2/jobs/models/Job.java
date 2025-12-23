@@ -42,5 +42,11 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private JobStatus status = JobStatus.OPEN; // OPEN, FILLED, COMPLETED
 
+    @Override
+    public String toString(){
+        String text="Title: "+title+" Descroption: "+description+" Hourly Rate"+hourlyRate;
+        return text;
+    }
+
 
 }
