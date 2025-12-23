@@ -15,16 +15,15 @@ public class FlashWork2Application {
 
     public static void main(String[] args) {
         SpringApplication.run(FlashWork2Application.class, args);
-
-
+        
     }
-    @Bean
-    CommandLineRunner show(JobRepository jobRepository){
-        return args -> {
-            List<Job> jobs=jobRepository.findAll();
-            jobs.stream().forEach(System.out::println);
-
-        };
+//    @Bean
+//    CommandLineRunner show(JobRepository jobRepository){
+//        return args -> {
+//            List<Job> jobs=jobRepository.findAll();
+//            jobs.stream().forEach(System.out::println);
+//
+//        };
     }
 
-}
+
