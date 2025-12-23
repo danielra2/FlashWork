@@ -15,7 +15,7 @@ public class FlashWork2Application {
 
     public static void main(String[] args) {
         SpringApplication.run(FlashWork2Application.class, args);
-        
+
     }
 //    @Bean
 //    CommandLineRunner show(JobRepository jobRepository){

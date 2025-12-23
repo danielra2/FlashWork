@@ -80,6 +80,7 @@ public class JobCommandServiceImpl implements JobCommandService{
         return jobMapper.mapJobToJobResponse(existingJob);
     }
 
+    @Transactional
     @Override
     public JobResponse deleteJob(Long jobId) {
         Job job = jobRepository.findById(jobId).orElseThrow(JobDoesntExistException::new);

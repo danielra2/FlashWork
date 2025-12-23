@@ -25,26 +25,26 @@ public class JobController {
     }
 
     // Creare Job (asociat unui angajator)
-    @PostMapping("/{employerId}")
+    @PostMapping("/create/{employerId}")
     @ResponseStatus(HttpStatus.CREATED)
     public JobResponse createJob(@PathVariable Long employerId, @Valid @RequestBody JobDto jobDto) {
         return jobCommandService.createJob(employerId, jobDto);
     }
 
     // Update Complet (PUT)
-    @PutMapping("/{jobId}")
+    @PutMapping("/put/{jobId}")
     public JobResponse updateJobPut(@PathVariable Long jobId, @Valid @RequestBody JobDto jobDto) {
         return jobCommandService.updateJobPut(jobId, jobDto);
     }
 
     // Update Partial (PATCH)
-    @PatchMapping("/{jobId}")
+    @PatchMapping("/patch/{jobId}")
     public JobResponse updateJobPatch(@PathVariable Long jobId, @RequestBody JobDto jobDto) {
         return jobCommandService.updateJobPatch(jobId, jobDto);
     }
 
     // Stergere Job (returneaza obiectul sters)
-    @DeleteMapping("/{jobId}")
+    @DeleteMapping("/delete/{jobId}")
     public JobResponse deleteJob(@PathVariable Long jobId) {
         return jobCommandService.deleteJob(jobId);
     }
