@@ -10,7 +10,10 @@ import mycode.flashwork2.workerProfile.exceptions.WorkerProfileNotFoundException
 import mycode.flashwork2.workerProfile.mappers.WorkerProfileMapper;
 import mycode.flashwork2.workerProfile.models.WorkerProfile;
 import mycode.flashwork2.workerProfile.repository.WorkerProfileRepository;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class WorkerProfileCommandServiceImpl implements WorkerProfileCommandService {
 
     private WorkerProfileRepository workerProfileRepository;

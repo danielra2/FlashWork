@@ -2,7 +2,9 @@ package mycode.flashwork2.users.service;
 
 import mycode.flashwork2.users.dtos.UserRegistrationRequest;
 import mycode.flashwork2.users.dtos.UserResponse;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserCommandService {
     UserResponse registerUser(UserRegistrationRequest request);
     UserResponse deleteUser(Long userId); // Modificat din void
