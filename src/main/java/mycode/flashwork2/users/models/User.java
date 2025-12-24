@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mycode.flashwork2.employerProfile.EmployerProfile;
+import mycode.flashwork2.workerProfile.models.WorkerProfile;
 
 import java.time.LocalDateTime;
 
@@ -31,5 +33,11 @@ public class User {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private WorkerProfile workerProfile;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private EmployerProfile employerProfile;
 
 }

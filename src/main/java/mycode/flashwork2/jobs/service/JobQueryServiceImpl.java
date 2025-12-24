@@ -16,7 +16,7 @@ public class JobQueryServiceImpl implements JobQueryService {
     private final JobRepository jobRepository;
     private final JobMapper jobMapper;
 
-    // Constructor manual - Spring îl va apela automat pentru injecție
+
     public JobQueryServiceImpl(JobRepository jobRepository, JobMapper jobMapper) {
         this.jobRepository = jobRepository;
         this.jobMapper = jobMapper;

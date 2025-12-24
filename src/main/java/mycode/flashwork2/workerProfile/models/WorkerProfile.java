@@ -28,4 +28,5 @@ public class WorkerProfile {
 
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments; // Aplicările acestui lucrător
+
 }
