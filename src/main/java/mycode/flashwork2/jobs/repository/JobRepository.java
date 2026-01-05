@@ -11,4 +11,5 @@ public interface JobRepository extends JpaRepository<Job,Long> {
     @Override
     List<Job> findAll();
 
+
 }

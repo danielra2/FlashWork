@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mycode.flashwork2.employerProfile.EmployerProfile;
+import mycode.flashwork2.employerProfile.models.EmployerProfile;
 import mycode.flashwork2.workerProfile.models.WorkerProfile;
 
 import java.time.LocalDateTime;

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import mycode.flashwork2.employerProfile.EmployerProfile;
+import mycode.flashwork2.employerProfile.models.EmployerProfile;
 import mycode.flashwork2.enrollment.models.Enrollment;
 
 import java.time.LocalDateTime;

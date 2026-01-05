@@ -1,4 +1,4 @@
-package mycode.flashwork2.employerProfile;
+package mycode.flashwork2.employerProfile.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,5 +34,53 @@ public class EmployerProfile {
 
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     private List<Job> jobs; // Lista de joburi postate de această firmă
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCui() {
+        return cui;
+    }
+
+    public void setCui(String cui) {
+        this.cui = cui;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
 }
 

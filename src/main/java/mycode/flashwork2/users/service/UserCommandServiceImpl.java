@@ -1,8 +1,8 @@
 package mycode.flashwork2.users.service;
 
 import jakarta.transaction.Transactional;
-import mycode.flashwork2.employerProfile.EmployerProfile;
-import mycode.flashwork2.employerProfile.EmployerProfileRepository;
+import mycode.flashwork2.employerProfile.models.EmployerProfile;
+import mycode.flashwork2.employerProfile.repository.EmployerProfileRepository;
 import mycode.flashwork2.users.dtos.UserRegistrationRequest;
 import mycode.flashwork2.users.dtos.UserResponse;
 import mycode.flashwork2.users.exceptions.EmailAlreadyInUse;
