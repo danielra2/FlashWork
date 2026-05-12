@@ -7,6 +7,7 @@ import mycode.flashwork2.employerProfile.dtos.EmployerProfileResponse;
 import mycode.flashwork2.employerProfile.mappers.EmployerProfileMapper;
 import mycode.flashwork2.employerProfile.models.EmployerProfile;
 import mycode.flashwork2.employerProfile.repository.EmployerProfileRepository;
+import mycode.flashwork2.employerProfile.exceptions.EmployerProfileNotFoundException;
 import mycode.flashwork2.users.exceptions.UserDoesntExistException;
 import mycode.flashwork2.users.models.User;
 import mycode.flashwork2.users.repository.UserRepository;
@@ -32,7 +33,7 @@ public class EmployerProfileQueryServiceImpl implements EmployerProfileQueryServ
         User user = userRepository.findById(userId).orElseThrow(UserDoesntExistException::new);
         // Trebuie să adaugi findByUser în EmployerProfileRepository
         EmployerProfile profile = employerProfileRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Profilul angajatorului nu a fost găsit"));
+                .orElseThrow(EmployerProfileNotFoundException::new);
         return employerProfileMapper.mapToResponse(profile);
     }
 }
