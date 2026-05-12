@@ -47,7 +47,7 @@ public class JobMapper {
         job.setStartTime(dto.startTime());
         job.setEndTime(dto.endTime());
         job.setLocation(dto.location());
-        // Statusul default OPEN este deja setat în entitate
+
         return job;
     }
 
