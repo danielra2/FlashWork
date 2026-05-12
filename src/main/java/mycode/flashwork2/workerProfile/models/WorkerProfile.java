@@ -18,7 +18,7 @@ public class WorkerProfile {
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Legătura către contul de login
+    private User user; // Legatura către contul de login
 
     private String firstName;
     private String lastName;

@@ -42,9 +42,7 @@ public class WorkerProfileCommandServiceImpl implements WorkerProfileCommandServ
 
     @Override
     public WorkerProfileResponse updateRating(Long workerId, Double newRatingScore) {
-        //  Căutăm profilul direct după ID-ul său (nu după User ID, fiind un apel intern de sistem)
         WorkerProfile profile = workerProfileRepository.findById(workerId).orElseThrow(WorkerProfileNotFoundException::new);
-
         if (newRatingScore<1.0||newRatingScore > 5.0) {
             throw new InvalidRatingException();
         }
