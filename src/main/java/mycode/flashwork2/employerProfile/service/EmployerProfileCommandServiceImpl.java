@@ -3,6 +3,7 @@ package mycode.flashwork2.employerProfile.service;
 
 import mycode.flashwork2.employerProfile.dtos.EmployerProfileDto;
 import mycode.flashwork2.employerProfile.dtos.EmployerProfileResponse;
+import mycode.flashwork2.employerProfile.exceptions.EmployerProfileNotFoundException;
 import mycode.flashwork2.employerProfile.mappers.EmployerProfileMapper;
 import mycode.flashwork2.employerProfile.models.EmployerProfile;
 import mycode.flashwork2.employerProfile.repository.EmployerProfileRepository;
@@ -30,7 +31,7 @@ public class EmployerProfileCommandServiceImpl implements EmployerProfileCommand
     @Transactional
     public EmployerProfileResponse updateProfile(Long userId, EmployerProfileDto dto) {
         User user = userRepository.findById(userId).orElseThrow(UserDoesntExistException::new);
-        EmployerProfile profile = employerProfileRepository.findByUser(user).orElseThrow(() -> new RuntimeException("Profilul angajatorului nu a fost găsit"));
+        EmployerProfile profile = employerProfileRepository.findByUser(user).orElseThrow(EmployerProfileNotFoundException::new);
         profile.setCompanyName(dto.companyName());
         profile.setCui(dto.cui());
         profile.setDescription(dto.description());

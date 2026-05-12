@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 
 import mycode.flashwork2.employerProfile.dtos.EmployerProfileResponse;
+import mycode.flashwork2.employerProfile.exceptions.EmployerProfileNotFoundException;
 import mycode.flashwork2.employerProfile.mappers.EmployerProfileMapper;
 import mycode.flashwork2.employerProfile.models.EmployerProfile;
 import mycode.flashwork2.employerProfile.repository.EmployerProfileRepository;
@@ -31,8 +32,7 @@ public class EmployerProfileQueryServiceImpl implements EmployerProfileQueryServ
     public EmployerProfileResponse getProfileByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserDoesntExistException::new);
         // Trebuie să adaugi findByUser în EmployerProfileRepository
-        EmployerProfile profile = employerProfileRepository.findByUser(user)
-                .orElseThrow(() -> new RuntimeException("Profilul angajatorului nu a fost găsit"));
+        EmployerProfile profile = employerProfileRepository.findByUser(user).orElseThrow(EmployerProfileNotFoundException::new);
         return employerProfileMapper.mapToResponse(profile);
     }
 }

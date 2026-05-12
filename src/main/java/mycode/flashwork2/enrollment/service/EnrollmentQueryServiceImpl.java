@@ -4,18 +4,18 @@ package mycode.flashwork2.enrollment.service;
 import mycode.flashwork2.enrollment.dto.EnrollmentResponse;
 import mycode.flashwork2.enrollment.mappers.EnrollmentMapper;
 import mycode.flashwork2.enrollment.repository.EnrollmentRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Service
 public class EnrollmentQueryServiceImpl implements EnrollmentQueryService {
 
-    private final EnrollmentQueryService enrollmentQueryService;
     private final EnrollmentRepository enrollmentRepository;
     private final EnrollmentMapper enrollmentMapper;
 
-    public EnrollmentQueryServiceImpl(EnrollmentQueryService enrollmentQueryService, EnrollmentRepository enrollmentRepository, EnrollmentMapper enrollmentMapper){
-        this.enrollmentQueryService=enrollmentQueryService;
+    public EnrollmentQueryServiceImpl(EnrollmentRepository enrollmentRepository, EnrollmentMapper enrollmentMapper){
+
         this.enrollmentRepository=enrollmentRepository;
         this.enrollmentMapper = enrollmentMapper;
     }
