@@ -10,6 +10,7 @@ import mycode.flashwork2.jobs.exceptions.JobDoesntExistException;
 import mycode.flashwork2.jobs.mappers.JobMapper;
 import mycode.flashwork2.jobs.models.Job;
 import mycode.flashwork2.jobs.repository.JobRepository;
+import mycode.flashwork2.employerProfile.exceptions.EmployerProfileNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +28,7 @@ public class JobCommandServiceImpl implements JobCommandService{
 
     @Override
     public JobResponse createJob(Long employerId, JobDto jobDto) {
-        EmployerProfile employer = employerProfileRepository.findById(employerId).orElseThrow(JobAlreadyExistsException::new);
+        EmployerProfile employer = employerProfileRepository.findById(employerId).orElseThrow(EmployerProfileNotFoundException::new);
         Job job = jobMapper.mapJobDtoToJob(jobDto);
 
         // Setam relația Many-to-One

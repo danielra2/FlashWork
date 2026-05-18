@@ -13,6 +13,7 @@ import mycode.flashwork2.users.models.UserType;
 import mycode.flashwork2.users.repository.UserRepository;
 import mycode.flashwork2.workerProfile.models.WorkerProfile;
 import mycode.flashwork2.workerProfile.repository.WorkerProfileRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -23,12 +24,14 @@ public class UserCommandServiceImpl implements UserCommandService {
     private UserMapper userMapper;
     private WorkerProfileRepository workerProfileRepository;
     private EmployerProfileRepository employerProfileRepository;
+    private PasswordEncoder passwordEncoder;
 
     public UserCommandServiceImpl(UserRepository userRepository,UserMapper userMapper,WorkerProfileRepository workerProfileRepository,EmployerProfileRepository employerProfileRepository, PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
         this.userMapper=userMapper;
         this.employerProfileRepository=employerProfileRepository;
         this.workerProfileRepository=workerProfileRepository;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
@@ -79,7 +82,6 @@ public class UserCommandServiceImpl implements UserCommandService {
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
-        // Salvarea este automata datorită @Transactional
 
         return userMapper.mapUserToUserResponse(user);
     }
