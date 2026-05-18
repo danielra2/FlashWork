@@ -34,6 +34,18 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()
+
+                        .requestMatchers("/api/jobs/create/**").hasRole("EMPLOYER")
+                        .requestMatchers("/api/jobs/put/**").hasRole("EMPLOYER")
+                        .requestMatchers("/api/jobs/patch/**").hasRole("EMPLOYER")
+                        .requestMatchers("/api/jobs/delete/**").hasRole("EMPLOYER")
+                        .requestMatchers("/api/employer-profiles/**").hasRole("EMPLOYER")
+                        .requestMatchers("/api/enrollments/*/status").hasRole("EMPLOYER")
+                        .requestMatchers("/api/enrollments/*/complete").hasRole("EMPLOYER")
+
+                        .requestMatchers("/api/enrollments/apply/**").hasRole("WORKER")
+                        .requestMatchers("/api/worker-profiles/**").hasRole("WORKER")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
