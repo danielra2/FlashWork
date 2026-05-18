@@ -2,6 +2,7 @@ package mycode.flashwork2.users.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import mycode.flashwork2.users.dtos.AuthResponse;
 import mycode.flashwork2.users.dtos.UserLoginRequest;
 import mycode.flashwork2.users.dtos.UserRegistrationRequest;
 import mycode.flashwork2.users.dtos.UserResponse;
@@ -39,7 +40,7 @@ public class UserController {
         return userCommandService.deleteUser(userId);
     }
     @PostMapping("/login")
-    public UserResponse login(@Valid @RequestBody UserLoginRequest request) {
+    public AuthResponse login(@Valid @RequestBody UserLoginRequest request) {
         return userQueryService.login(request);
     }
 }

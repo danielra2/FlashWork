@@ -2,6 +2,7 @@ package mycode.flashwork2.enrollment.controller;
 
 import mycode.flashwork2.enrollment.exceptions.EnrollmentAlreadyExistsException;
 import mycode.flashwork2.enrollment.exceptions.EnrollmentNotFoundException;
+import mycode.flashwork2.jobs.exceptions.JobNotAvailableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,14 @@ public class EnrollmentExceptionHandler {
 
     @ExceptionHandler(EnrollmentAlreadyExistsException.class)
     public ResponseEntity<Object> handleEnrollmentAlreadyExists(EnrollmentAlreadyExistsException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+        body.put("status", HttpStatus.CONFLICT.value());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(JobNotAvailableException.class)
+    public ResponseEntity<Object> handleJobNotAvailable(JobNotAvailableException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());

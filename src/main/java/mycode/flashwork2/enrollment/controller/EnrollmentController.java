@@ -44,4 +44,8 @@ public class EnrollmentController {
     public List<EnrollmentResponse> getEnrollmentsByWorker(@PathVariable Long workerId) {
         return enrollmentQueryService.getEnrollmentsByWorker(workerId);
     }
+    @PatchMapping("/{enrollmentId}/complete")
+    public EnrollmentResponse completeEnrollment(@PathVariable Long enrollmentId) {
+        return enrollmentCommandService.completeEnrollment(enrollmentId);
+    }
 }

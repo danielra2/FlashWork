@@ -25,3 +25,7 @@ spring:
 
 server:
   port: 8081
+
+jwt:
+  secret: flashwork-super-secret-key-2024-minimum-256-bits-long
+  expiration: 86400000

@@ -10,6 +10,7 @@ import mycode.flashwork2.enrollment.models.EnrollmentStatus;
 import mycode.flashwork2.enrollment.repository.EnrollmentRepository;
 import mycode.flashwork2.jobs.exceptions.JobDoesntExistException;
 import mycode.flashwork2.jobs.models.Job;
+import mycode.flashwork2.jobs.models.JobStatus;
 import mycode.flashwork2.jobs.repository.JobRepository;
 import mycode.flashwork2.workerProfile.exceptions.WorkerProfileNotFoundException;
 import mycode.flashwork2.workerProfile.models.WorkerProfile;
@@ -63,5 +64,17 @@ public class EnrollmentCommandServiceImpl implements EnrollmentCommandService {
         EnrollmentResponse response = enrollmentMapper.mapToResponse(enrollment);
         enrollmentRepository.delete(enrollment);
         return response;
+    }
+
+    @Override
+    @Transactional
+    public EnrollmentResponse completeEnrollment(Long enrollmentId) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElseThrow(EnrollmentNotFoundException::new);
+        enrollment.setStatus(EnrollmentStatus.COMPLETED);
+        Job job = enrollment.getJob();
+        job.setStatus(JobStatus.COMPLETED);
+        jobRepository.save(job);
+
+        return enrollmentMapper.mapToResponse(enrollment);
     }
 }

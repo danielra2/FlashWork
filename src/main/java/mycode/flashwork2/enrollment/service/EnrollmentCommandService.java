@@ -7,4 +7,5 @@ public interface EnrollmentCommandService {
     EnrollmentResponse applyToJob(Long jobId, Long workerId);
     EnrollmentResponse updateStatus(Long enrollmentId, EnrollmentStatus newStatus);
     EnrollmentResponse cancelEnrollment(Long enrollmentId);
+    EnrollmentResponse completeEnrollment(Long enrollmentId);
 }

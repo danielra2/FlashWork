@@ -24,7 +24,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     private WorkerProfileRepository workerProfileRepository;
     private EmployerProfileRepository employerProfileRepository;
 
-    public UserCommandServiceImpl(UserRepository userRepository,UserMapper userMapper,WorkerProfileRepository workerProfileRepository,EmployerProfileRepository employerProfileRepository){
+    public UserCommandServiceImpl(UserRepository userRepository,UserMapper userMapper,WorkerProfileRepository workerProfileRepository,EmployerProfileRepository employerProfileRepository, PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
         this.userMapper=userMapper;
         this.employerProfileRepository=employerProfileRepository;
@@ -38,6 +38,7 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         }
         User user = userMapper.mapRegistrationRequestToUser(request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
         // Creare profil automat
@@ -77,7 +78,7 @@ public class UserCommandServiceImpl implements UserCommandService {
             throw new RuntimeException("Parola este prea scurtă");
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         // Salvarea este automata datorită @Transactional
 
         return userMapper.mapUserToUserResponse(user);
