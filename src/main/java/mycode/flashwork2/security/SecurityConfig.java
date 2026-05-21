@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()
 
-                        .requestMatchers("/api/jobs/create/**").hasRole("EMPLOYER")
+                        .requestMatchers("/api/jobs/create").hasRole("EMPLOYER")
                         .requestMatchers("/api/jobs/put/**").hasRole("EMPLOYER")
                         .requestMatchers("/api/jobs/patch/**").hasRole("EMPLOYER")
                         .requestMatchers("/api/jobs/delete/**").hasRole("EMPLOYER")

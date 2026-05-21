@@ -11,7 +11,12 @@ import mycode.flashwork2.jobs.mappers.JobMapper;
 import mycode.flashwork2.jobs.models.Job;
 import mycode.flashwork2.jobs.repository.JobRepository;
 import mycode.flashwork2.employerProfile.exceptions.EmployerProfileNotFoundException;
+import mycode.flashwork2.users.exceptions.UserDoesntExistException;
+import mycode.flashwork2.users.models.User;
+import mycode.flashwork2.users.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import mycode.flashwork2.users.models.User;
+import mycode.flashwork2.users.repository.UserRepository;
 
 @Service
 public class JobCommandServiceImpl implements JobCommandService{
@@ -19,25 +24,24 @@ public class JobCommandServiceImpl implements JobCommandService{
     private EmployerProfileRepository employerProfileRepository;
     private JobRepository jobRepository;
     private JobMapper jobMapper;
+    private UserRepository userRepository;
 
-    public JobCommandServiceImpl(EmployerProfileRepository employerProfileRepository,JobRepository jobRepository,JobMapper jobMapper){
+    public JobCommandServiceImpl(EmployerProfileRepository employerProfileRepository,JobRepository jobRepository,JobMapper jobMapper, UserRepository userRepository){
         this.employerProfileRepository=employerProfileRepository;
         this.jobRepository=jobRepository;
         this.jobMapper=jobMapper;
+        this.userRepository=userRepository;
     }
 
     @Override
-    public JobResponse createJob(Long employerId, JobDto jobDto) {
-        EmployerProfile employer = employerProfileRepository.findById(employerId).orElseThrow(EmployerProfileNotFoundException::new);
+    public JobResponse createJob(String email, JobDto jobDto) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserDoesntExistException::new);
+        EmployerProfile employer = employerProfileRepository.findByUserId(user.getId())
+                .orElseThrow(EmployerProfileNotFoundException::new);
         Job job = jobMapper.mapJobDtoToJob(jobDto);
-
-        // Setam relația Many-to-One
         job.setEmployer(employer);
-
-        //  Salvam jobul
         Job savedJob = jobRepository.save(job);
-
-        //Returnam răspunsul mapat (Entity -> Response)
         return jobMapper.mapJobToJobResponse(savedJob);
     }
     @Transactional

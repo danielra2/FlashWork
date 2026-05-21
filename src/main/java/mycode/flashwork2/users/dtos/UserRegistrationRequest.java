@@ -16,5 +16,10 @@ public record UserRegistrationRequest(
         String password,
 
         @NotNull(message = "Tipul de utilizator este obligatoriu")
-        UserType userType
+        UserType userType,
+
+        String firstName,
+        String lastName,
+        String companyName
+        //la campurile noi validarea o facem in service
 ) {}

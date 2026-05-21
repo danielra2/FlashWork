@@ -5,7 +5,9 @@ import mycode.flashwork2.enrollment.dto.EnrollmentResponse;
 import mycode.flashwork2.enrollment.models.EnrollmentStatus;
 import mycode.flashwork2.enrollment.service.EnrollmentCommandService;
 import mycode.flashwork2.enrollment.service.EnrollmentQueryService;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +20,11 @@ public class EnrollmentController {
     private final EnrollmentCommandService enrollmentCommandService;
     private final EnrollmentQueryService enrollmentQueryService;
 
-    @PostMapping("/apply/{jobId}/{workerId}")
+    @PostMapping("/apply/{jobId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public EnrollmentResponse applyToJob(@PathVariable Long jobId, @PathVariable Long workerId) {
-        return enrollmentCommandService.applyToJob(jobId, workerId);
+    public EnrollmentResponse applyToJob(@PathVariable Long jobId, Authentication authentication) {
+        String email = authentication.getName();
+        return enrollmentCommandService.applyToJob(jobId, email);
     }
 
     @PatchMapping("/{enrollmentId}/status")

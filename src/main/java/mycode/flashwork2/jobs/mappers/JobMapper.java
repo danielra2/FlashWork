@@ -31,7 +31,7 @@ public class JobMapper {
                 job.getEndTime(),
                 nvl(job.getLocation()),
                 job.getStatus(),
-                job.getEmployer() != null ? job.getEmployer().getId() : null,
+                job.getEmployer() != null ? job.getEmployer().getUser().getId() : null,
                 job.getEmployer() != null ? nvl(job.getEmployer().getCompanyName()) : ""
         );
     }

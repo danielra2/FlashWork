@@ -8,6 +8,7 @@ import mycode.flashwork2.jobs.dtos.JobResponse;
 import mycode.flashwork2.jobs.service.JobCommandService;
 import mycode.flashwork2.jobs.service.JobQueryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,10 +23,11 @@ public class JobController {
     public JobListResponse getAllJobs() {
         return jobQueryService.findAllJobs();
     }
-    @PostMapping("/create/{employerId}")
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public JobResponse createJob(@PathVariable Long employerId, @Valid @RequestBody JobDto jobDto) {
-        return jobCommandService.createJob(employerId, jobDto);
+    public JobResponse createJob(Authentication authentication, @Valid @RequestBody JobDto jobDto) {
+        String email = authentication.getName();
+        return jobCommandService.createJob(email, jobDto);
     }
     @PutMapping("/put/{jobId}")
     public JobResponse updateJobPut(@PathVariable Long jobId, @Valid @RequestBody JobDto jobDto) {

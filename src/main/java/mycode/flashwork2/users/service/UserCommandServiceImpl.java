@@ -36,28 +36,30 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public UserResponse registerUser(UserRegistrationRequest request) {
-        if(userRepository.existsByEmail(request.email())){
+        if (userRepository.existsByEmail(request.email())) {
             throw new EmailAlreadyInUse();
-
         }
+
         User user = userMapper.mapRegistrationRequestToUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
-        // Creare profil automat
         if (savedUser.getUserType() == UserType.WORKER) {
             WorkerProfile workerProfile = new WorkerProfile();
             workerProfile.setUser(savedUser);
+            workerProfile.setFirstName(request.firstName());
+            workerProfile.setLastName(request.lastName());
             workerProfileRepository.save(workerProfile);
         } else {
             EmployerProfile employerProfile = new EmployerProfile();
             employerProfile.setUser(savedUser);
-            employerProfile.setCompanyName(""); // Camp obligatoriu în DB, trebuie inițializat
+            employerProfile.setCompanyName(
+                    request.companyName() != null ? request.companyName() : ""
+            );
             employerProfileRepository.save(employerProfile);
         }
 
         return userMapper.mapUserToUserResponse(savedUser);
-
     }
     @Transactional
     @Override

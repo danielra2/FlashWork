@@ -12,6 +12,9 @@ import mycode.flashwork2.jobs.exceptions.JobDoesntExistException;
 import mycode.flashwork2.jobs.models.Job;
 import mycode.flashwork2.jobs.models.JobStatus;
 import mycode.flashwork2.jobs.repository.JobRepository;
+import mycode.flashwork2.users.exceptions.UserDoesntExistException;
+import mycode.flashwork2.users.models.User;
+import mycode.flashwork2.users.repository.UserRepository;
 import mycode.flashwork2.workerProfile.exceptions.WorkerProfileNotFoundException;
 import mycode.flashwork2.workerProfile.models.WorkerProfile;
 import mycode.flashwork2.workerProfile.repository.WorkerProfileRepository;
@@ -24,22 +27,29 @@ public class EnrollmentCommandServiceImpl implements EnrollmentCommandService {
     private final JobRepository jobRepository;
     private final WorkerProfileRepository workerProfileRepository;
     private final EnrollmentMapper enrollmentMapper;
+    private final UserRepository userRepository;
 
-    public EnrollmentCommandServiceImpl(EnrollmentRepository enrollmentRepository,JobRepository jobRepository, WorkerProfileRepository workerProfileRepository, EnrollmentMapper enrollmentMapper) {
+    public EnrollmentCommandServiceImpl(EnrollmentRepository enrollmentRepository,JobRepository jobRepository, WorkerProfileRepository workerProfileRepository, EnrollmentMapper enrollmentMapper, UserRepository userRepository) {
         this.enrollmentRepository=enrollmentRepository;
         this.jobRepository=jobRepository;
         this.workerProfileRepository=workerProfileRepository;
         this.enrollmentMapper=enrollmentMapper;
+        this.userRepository=userRepository;
     }
 
     @Override
     @Transactional
-    public EnrollmentResponse applyToJob(Long jobId, Long workerId) {
-        if (enrollmentRepository.existsByJobIdAndWorkerId(jobId, workerId)) {
+    public EnrollmentResponse applyToJob(Long jobId, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserDoesntExistException::new);
+        WorkerProfile worker = workerProfileRepository.findByUserId(user.getId())
+                .orElseThrow(WorkerProfileNotFoundException::new);
+
+        if (enrollmentRepository.existsByJobIdAndWorkerId(jobId, worker.getId())) {
             throw new EnrollmentAlreadyExistsException();
         }
+
         Job job = jobRepository.findById(jobId).orElseThrow(JobDoesntExistException::new);
-        WorkerProfile worker = workerProfileRepository.findById(workerId).orElseThrow(WorkerProfileNotFoundException::new);
 
         Enrollment enrollment = new Enrollment();
         enrollment.setJob(job);
