@@ -40,10 +40,8 @@ public class EnrollmentCommandServiceImpl implements EnrollmentCommandService {
     @Override
     @Transactional
     public EnrollmentResponse applyToJob(Long jobId, String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(UserDoesntExistException::new);
-        WorkerProfile worker = workerProfileRepository.findByUserId(user.getId())
-                .orElseThrow(WorkerProfileNotFoundException::new);
+        User user = userRepository.findByEmail(email).orElseThrow(UserDoesntExistException::new);
+        WorkerProfile worker = workerProfileRepository.findByUserId(user.getId()).orElseThrow(WorkerProfileNotFoundException::new);
 
         if (enrollmentRepository.existsByJobIdAndWorkerId(jobId, worker.getId())) {
             throw new EnrollmentAlreadyExistsException();
@@ -62,8 +60,26 @@ public class EnrollmentCommandServiceImpl implements EnrollmentCommandService {
     @Override
     @Transactional
     public EnrollmentResponse updateStatus(Long enrollmentId, EnrollmentStatus newStatus) {
-        Enrollment enrollment=enrollmentRepository.findById(enrollmentId).orElseThrow(EnrollmentNotFoundException::new);
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId).orElseThrow(EnrollmentNotFoundException::new);
         enrollment.setStatus(newStatus);
+        // Dacă tocmai am ACCEPTAT pe cineva, verificăm dacă jobul s-a umplut
+        if (newStatus == EnrollmentStatus.ACCEPTED) {
+            Job job = enrollment.getJob();
+
+            if (job.getMaxWorkers() != null) {
+                // numărăm câți sunt acceptați (inclusiv cel tocmai acceptat)
+                long acceptedCount = enrollmentRepository
+                        .findAllByJobIdAndStatus(job.getId(), EnrollmentStatus.ACCEPTED)
+                        .size();
+
+                if (acceptedCount >= job.getMaxWorkers()) {
+                    // s-au umplut locurile → închidem jobul
+                    job.setStatus(JobStatus.FILLED);
+                    jobRepository.save(job);
+                }
+            }
+        }
+
         return enrollmentMapper.mapToResponse(enrollment);
     }
 

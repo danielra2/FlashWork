@@ -1,6 +1,7 @@
 package mycode.flashwork2.jobs.dtos;
 
 import jakarta.validation.constraints.*;
+import mycode.flashwork2.jobs.models.JobCategory;
 import java.time.LocalDateTime;
 
 public record JobDto(
@@ -22,5 +23,15 @@ public record JobDto(
         LocalDateTime endTime,
 
         @NotBlank(message = "Locația este obligatorie")
-        String location
+        String location,
+
+        JobCategory category,
+
+        @Min(value = 1, message = "Trebuie cel puțin un loc")
+        Integer maxWorkers,
+
+        Boolean isRecurring,
+
+        @Min(value = 1, message = "Intervalul minim este 1 zi")
+        Integer recurrenceDays
 ) {}

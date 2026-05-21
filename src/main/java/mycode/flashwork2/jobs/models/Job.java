@@ -1,8 +1,6 @@
 package mycode.flashwork2.jobs.models;
 
-
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.Setter;
 import mycode.flashwork2.employerProfile.models.EmployerProfile;
@@ -14,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name="job_post")
+@Table(name = "job_post")
 public class Job {
 
     @Id
@@ -41,17 +39,26 @@ public class Job {
 
     private String location;
 
+    @Column(name = "max_workers")
+    private Integer maxWorkers;           // câte locuri are jobul (null = nelimitat)
+
+    @Column(name = "is_recurring")
+    private boolean recurring = false;// se repetă sau nu
+
+    @Column(name = "recurrence_days")
+    private Integer recurrenceDays;       // la câte zile se repetă (ex: 1 = zilnic)
+
     @Enumerated(EnumType.STRING)
-    private JobStatus status = JobStatus.OPEN; // OPEN, FILLED, COMPLETED
+    private JobStatus status = JobStatus.OPEN;
+
+    @Enumerated(EnumType.STRING)
+    private JobCategory category;
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments;
 
     @Override
-    public String toString(){
-        String text="Title: "+title+" Descroption: "+description+" Hourly Rate"+hourlyRate;
-        return text;
+    public String toString() {
+        return "Title: " + title + " Description: " + description + " Hourly Rate: " + hourlyRate;
     }
-
-
 }

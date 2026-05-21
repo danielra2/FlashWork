@@ -1,5 +1,6 @@
 package mycode.flashwork2.jobs.mappers;
 
+import mycode.flashwork2.enrollment.models.EnrollmentStatus;
 import mycode.flashwork2.jobs.dtos.JobDto;
 import mycode.flashwork2.jobs.dtos.JobListResponse;
 import mycode.flashwork2.jobs.dtos.JobResponse;
@@ -13,14 +14,18 @@ import java.util.stream.Collectors;
 @Component
 public class JobMapper {
 
-
     private static String nvl(String s) {
         return s == null ? "" : s;
     }
 
-    // 1. Mapare de la Entitate la Response (pentru GET-uri)
     public JobResponse mapJobToJobResponse(Job job) {
         Objects.requireNonNull(job, "Job entity is null");
+
+        // numărăm câți applicanți au fost acceptați
+        int acceptedCount = (job.getEnrollments() == null) ? 0 :
+                (int) job.getEnrollments().stream()
+                        .filter(e -> e.getStatus() == EnrollmentStatus.ACCEPTED)
+                        .count();
 
         return new JobResponse(
                 job.getId(),
@@ -31,12 +36,16 @@ public class JobMapper {
                 job.getEndTime(),
                 nvl(job.getLocation()),
                 job.getStatus(),
+                job.getCategory(),
+                job.getMaxWorkers(),
+                acceptedCount,
+                job.isRecurring(),
+                job.getRecurrenceDays(),
                 job.getEmployer() != null ? job.getEmployer().getUser().getId() : null,
                 job.getEmployer() != null ? nvl(job.getEmployer().getCompanyName()) : ""
         );
     }
 
-    // 2. Mapare de la DTO la Entitate (pentru POST/CREATE)
     public Job mapJobDtoToJob(JobDto dto) {
         Objects.requireNonNull(dto, "Job DTO is null");
 
@@ -47,11 +56,14 @@ public class JobMapper {
         job.setStartTime(dto.startTime());
         job.setEndTime(dto.endTime());
         job.setLocation(dto.location());
+        job.setCategory(dto.category());
+        job.setMaxWorkers(dto.maxWorkers());
+        job.setRecurring(dto.isRecurring());
+        job.setRecurrenceDays(dto.recurrenceDays());
 
         return job;
     }
 
-    // 3. Mapare pentru liste de joburi
     public List<JobResponse> mapJobListToJobResponseList(List<Job> jobs) {
         if (jobs == null) return List.of();
         return jobs.stream()
@@ -60,9 +72,7 @@ public class JobMapper {
                 .collect(Collectors.toList());
     }
 
-
     public JobListResponse mapJobListToJobListResponse(List<Job> jobs) {
-        List<JobResponse> jobResponseList = mapJobListToJobResponseList(jobs);
-        return new JobListResponse(jobResponseList);
+        return new JobListResponse(mapJobListToJobResponseList(jobs));
     }
 }
