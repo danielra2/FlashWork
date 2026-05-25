@@ -22,11 +22,7 @@ public class JobRecurrenceScheduler {
     @Scheduled(cron = "0 0 0 * * *")
     @Transactional
     public void createNextOccurrences() {
-        List<Job> expiredRecurringJobs = jobRepository
-                .findByRecurringTrueAndStatusAndStartTimeBefore(
-                        JobStatus.OPEN,
-                        LocalDateTime.now()
-                );
+        List<Job> expiredRecurringJobs = jobRepository.findByRecurringTrueAndStatusAndStartTimeBefore(JobStatus.OPEN, LocalDateTime.now());
 
         for (Job oldJob : expiredRecurringJobs) {
             int days = oldJob.getRecurrenceDays() != null ? oldJob.getRecurrenceDays() : 1;

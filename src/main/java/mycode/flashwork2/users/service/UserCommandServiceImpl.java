@@ -16,6 +16,8 @@ import mycode.flashwork2.workerProfile.repository.WorkerProfileRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 
 @Service
 public class UserCommandServiceImpl implements UserCommandService {
@@ -49,6 +51,9 @@ public class UserCommandServiceImpl implements UserCommandService {
             workerProfile.setUser(savedUser);
             workerProfile.setFirstName(request.firstName());
             workerProfile.setLastName(request.lastName());
+            if (request.skills() != null && !request.skills().isEmpty()) {
+                workerProfile.setSkills(new ArrayList<>(request.skills()));
+            }
             workerProfileRepository.save(workerProfile);
         } else {
             EmployerProfile employerProfile = new EmployerProfile();

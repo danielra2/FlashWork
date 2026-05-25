@@ -11,6 +11,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment,Long> {
     List<Enrollment>findByWorkerId(Long WorkerId);
     boolean existsByJobIdAndWorkerId(Long jobId, Long workerId);
     List<Enrollment> findAllByJobIdAndStatus(Long jobId, EnrollmentStatus status);
+    List<Enrollment> findByStatusAndClockInTimeIsNotNullAndClockOutTimeIsNull(EnrollmentStatus status);
 
 
 

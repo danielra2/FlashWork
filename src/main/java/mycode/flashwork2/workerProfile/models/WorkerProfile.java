@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import mycode.flashwork2.users.models.User;
 import mycode.flashwork2.enrollment.models.Enrollment;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,21 +13,30 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkerProfile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Legatura către contul de login
+    private User user;
 
     private String firstName;
     private String lastName;
     private String phone;
-    private String skills;
+
+    // @ElementCollection = store the list in a separate table automatically
+    // @Enumerated(STRING) = store the enum name as text, not a number
+    // @CollectionTable = defines the table name and the foreign key column
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "worker_skills", joinColumns = @JoinColumn(name = "worker_id"))
+    @Column(name = "skill")
+    private List<WorkerSkill> skills = new ArrayList<>();
+
     private Double rating = 0.0;
 
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
-    private List<Enrollment> enrollments; // Aplicările acestui lucrător
-
+    private List<Enrollment> enrollments;
 }

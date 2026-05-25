@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import mycode.flashwork2.users.models.UserType;
+import mycode.flashwork2.workerProfile.models.WorkerSkill;
+
+import java.util.List;
 
 public record UserRegistrationRequest(
         @NotBlank(message = "Email-ul este obligatoriu")
@@ -20,6 +23,7 @@ public record UserRegistrationRequest(
 
         String firstName,
         String lastName,
-        String companyName
+        String companyName,
+        List<WorkerSkill>skills
         //la campurile noi validarea o facem in service
 ) {}

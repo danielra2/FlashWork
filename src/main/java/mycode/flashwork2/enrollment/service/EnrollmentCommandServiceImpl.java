@@ -18,7 +18,11 @@ import mycode.flashwork2.users.repository.UserRepository;
 import mycode.flashwork2.workerProfile.exceptions.WorkerProfileNotFoundException;
 import mycode.flashwork2.workerProfile.models.WorkerProfile;
 import mycode.flashwork2.workerProfile.repository.WorkerProfileRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EnrollmentCommandServiceImpl implements EnrollmentCommandService {
@@ -101,6 +105,42 @@ public class EnrollmentCommandServiceImpl implements EnrollmentCommandService {
         job.setStatus(JobStatus.COMPLETED);
         jobRepository.save(job);
 
+        return enrollmentMapper.mapToResponse(enrollment);
+    }
+
+    @Override
+    @Transactional
+    public EnrollmentResponse clockIn(Long enrollmentId, String code) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(EnrollmentNotFoundException::new);
+
+        // worker must be accepted to clock in
+        if (enrollment.getStatus() != EnrollmentStatus.ACCEPTED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not accepted for this job");
+        }
+
+        // compare codes case-insensitively (in case worker types lowercase)
+        String jobCode = enrollment.getJob().getClockInCode();
+        if (jobCode == null || !jobCode.equalsIgnoreCase(code.trim())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid clock-in code");
+        }
+
+        enrollment.setClockInTime(LocalDateTime.now());
+        return enrollmentMapper.mapToResponse(enrollment);
+    }
+
+    @Override
+    @Transactional
+    public EnrollmentResponse clockOut(Long enrollmentId) {
+        Enrollment enrollment = enrollmentRepository.findById(enrollmentId)
+                .orElseThrow(EnrollmentNotFoundException::new);
+
+        if (enrollment.getClockInTime() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Worker has not clocked in yet");
+        }
+
+        enrollment.setClockOutTime(LocalDateTime.now());
+        enrollment.setStatus(EnrollmentStatus.COMPLETED);
         return enrollmentMapper.mapToResponse(enrollment);
     }
 }

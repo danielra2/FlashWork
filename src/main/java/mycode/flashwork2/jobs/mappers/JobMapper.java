@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Component
@@ -18,10 +19,20 @@ public class JobMapper {
         return s == null ? "" : s;
     }
 
+    // No 0/O or 1/I to avoid confusion when reading aloud
+    private static String generateClockInCode() {
+        String chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        StringBuilder sb = new StringBuilder();
+        Random rnd = new Random();
+        for (int i = 0; i < 6; i++) {
+            sb.append(chars.charAt(rnd.nextInt(chars.length())));
+        }
+        return sb.toString();
+    }
+
     public JobResponse mapJobToJobResponse(Job job) {
         Objects.requireNonNull(job, "Job entity is null");
 
-        // numărăm câți applicanți au fost acceptați
         int acceptedCount = (job.getEnrollments() == null) ? 0 :
                 (int) job.getEnrollments().stream()
                         .filter(e -> e.getStatus() == EnrollmentStatus.ACCEPTED)
@@ -42,7 +53,8 @@ public class JobMapper {
                 job.isRecurring(),
                 job.getRecurrenceDays(),
                 job.getEmployer() != null ? job.getEmployer().getUser().getId() : null,
-                job.getEmployer() != null ? nvl(job.getEmployer().getCompanyName()) : ""
+                job.getEmployer() != null ? nvl(job.getEmployer().getCompanyName()) : "",
+                job.getClockInCode()
         );
     }
 
@@ -58,8 +70,9 @@ public class JobMapper {
         job.setLocation(dto.location());
         job.setCategory(dto.category());
         job.setMaxWorkers(dto.maxWorkers());
-        job.setRecurring(dto.isRecurring());
+        job.setRecurring(dto.isRecurring() != null && dto.isRecurring());
         job.setRecurrenceDays(dto.recurrenceDays());
+        job.setClockInCode(generateClockInCode()); // auto-generate on creation
 
         return job;
     }

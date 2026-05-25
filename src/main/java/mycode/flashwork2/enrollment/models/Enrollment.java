@@ -28,4 +28,11 @@ public class Enrollment {
 
     @Enumerated(EnumType.STRING)
     private EnrollmentStatus status = EnrollmentStatus.PENDING; // PENDING,ACCEPTED,REJECTED
+
+    @Column(name = "clock_in_time")
+    private LocalDateTime clockInTime;
+
+    // null = not yet clocked out
+    @Column(name = "clock_out_time")
+    private LocalDateTime clockOutTime;
 }

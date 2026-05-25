@@ -51,4 +51,16 @@ public class EnrollmentController {
     public EnrollmentResponse completeEnrollment(@PathVariable Long enrollmentId) {
         return enrollmentCommandService.completeEnrollment(enrollmentId);
     }
+
+
+    @PostMapping("/{enrollmentId}/clock-in")
+    public EnrollmentResponse clockIn(@PathVariable Long enrollmentId,@RequestParam String code) {
+        return enrollmentCommandService.clockIn(enrollmentId, code);
+    }
+
+    // Worker clicks "Clock Out" manually
+    @PostMapping("/{enrollmentId}/clock-out")
+    public EnrollmentResponse clockOut(@PathVariable Long enrollmentId) {
+        return enrollmentCommandService.clockOut(enrollmentId);
+    }
 }

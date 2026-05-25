@@ -8,4 +8,6 @@ public interface EnrollmentCommandService {
     EnrollmentResponse updateStatus(Long enrollmentId, EnrollmentStatus newStatus);
     EnrollmentResponse cancelEnrollment(Long enrollmentId);
     EnrollmentResponse completeEnrollment(Long enrollmentId);
+    EnrollmentResponse clockIn(Long enrollmentId, String code);
+    EnrollmentResponse clockOut(Long enrollmentId);
 }

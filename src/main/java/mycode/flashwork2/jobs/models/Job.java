@@ -54,6 +54,10 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private JobCategory category;
 
+    @Column(name = "clock_in_code", length = 8)
+    private String clockInCode;
+
+
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments;
 

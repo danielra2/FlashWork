@@ -19,5 +19,6 @@ public record JobResponse(
         boolean isRecurring,
         Integer recurrenceDays,
         Long employerId,
-        String companyName
+        String companyName,
+        String clockInCode
 ) {}
