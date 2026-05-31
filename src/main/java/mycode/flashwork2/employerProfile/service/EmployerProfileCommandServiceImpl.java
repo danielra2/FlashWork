@@ -33,7 +33,6 @@ public class EmployerProfileCommandServiceImpl implements EmployerProfileCommand
         User user = userRepository.findById(userId).orElseThrow(UserDoesntExistException::new);
         EmployerProfile profile = employerProfileRepository.findByUser(user).orElseThrow(EmployerProfileNotFoundException::new);
         profile.setCompanyName(dto.companyName());
-        profile.setCui(dto.cui());
         profile.setDescription(dto.description());
 
         return employerProfileMapper.mapToResponse(profile);

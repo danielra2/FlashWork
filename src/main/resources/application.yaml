@@ -21,8 +21,6 @@ spring:
         format_sql: true
     open-in-view: false
 
-
-
 server:
   port: 8081
 
@@ -30,6 +28,6 @@ jwt:
   secret: flashwork-super-secret-key-2024-minimum-256-bits-long
   expiration: 86400000
 
-  logging:
-    level:
-      org.springframework.security: DEBUG
+logging:
+  level:
+    org.springframework.security: DEBUG

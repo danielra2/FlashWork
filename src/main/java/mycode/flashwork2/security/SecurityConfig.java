@@ -44,6 +44,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/enrollments/*/complete").hasRole("EMPLOYER")
 
                         .requestMatchers("/api/enrollments/apply/**").hasRole("WORKER")
+                        .requestMatchers("/api/enrollments/*/clock-in").hasRole("WORKER")   // NEW
+                        .requestMatchers("/api/enrollments/*/clock-out").hasRole("WORKER")  // NEW
                         .requestMatchers("/api/worker-profiles/**").hasRole("WORKER")
 
                         .anyRequest().authenticated()

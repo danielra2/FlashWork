@@ -28,8 +28,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     @Transactional(readOnly = true)
     public AuthResponse login(UserLoginRequest request) {
-        User user = userRepository.findByEmail(request.email())
-                .orElseThrow(UserDoesntExistException::new);
+        User user = userRepository.findByEmail(request.email()).orElseThrow(UserDoesntExistException::new);
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new RuntimeException("Parola incorecta");

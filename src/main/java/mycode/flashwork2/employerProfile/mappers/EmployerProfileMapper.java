@@ -12,7 +12,6 @@ public class EmployerProfileMapper {
                 profile.getId(),
                 profile.getUser().getId(),
                 profile.getCompanyName(),
-                profile.getCui(),
                 profile.getDescription()
         );
     }

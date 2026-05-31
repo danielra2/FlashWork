@@ -1,5 +1,6 @@
 package mycode.flashwork2.workerProfile.service;
 
+import jakarta.transaction.Transactional;
 import mycode.flashwork2.users.exceptions.UserDoesntExistException;
 import mycode.flashwork2.users.models.User;
 import mycode.flashwork2.users.repository.UserRepository;
@@ -27,6 +28,7 @@ public class WorkerProfileCommandServiceImpl implements WorkerProfileCommandServ
     }
 
     @Override
+    @Transactional
     public WorkerProfileResponse updateProfile(Long userId, WorkerProfileDto dto) {
         User user = userRepository.findById(userId).orElseThrow(UserDoesntExistException::new);
 
@@ -41,6 +43,7 @@ public class WorkerProfileCommandServiceImpl implements WorkerProfileCommandServ
     }
 
     @Override
+    @Transactional
     public WorkerProfileResponse updateRating(Long workerId, Double newRatingScore) {
         WorkerProfile profile = workerProfileRepository.findById(workerId).orElseThrow(WorkerProfileNotFoundException::new);
         if (newRatingScore<1.0||newRatingScore > 5.0) {

@@ -28,7 +28,6 @@ public class EmployerProfile {
     @Column(nullable = false)
     private String companyName;
 
-    private String cui; // Codul Unic de Înregistrare
 
     private String description;
 
@@ -57,14 +56,6 @@ public class EmployerProfile {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getCui() {
-        return cui;
-    }
-
-    public void setCui(String cui) {
-        this.cui = cui;
     }
 
     public String getDescription() {

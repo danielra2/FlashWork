@@ -29,7 +29,7 @@ public class WorkerProfile {
     // @ElementCollection = store the list in a separate table automatically
     // @Enumerated(STRING) = store the enum name as text, not a number
     // @CollectionTable = defines the table name and the foreign key column
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "worker_skills", joinColumns = @JoinColumn(name = "worker_id"))
     @Column(name = "skill")

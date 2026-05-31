@@ -4,6 +4,5 @@ public record EmployerProfileResponse(
         Long id,
         Long userId,
         String companyName,
-        String cui,
-        String description
+        String cui
 ) {}

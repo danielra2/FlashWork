@@ -20,23 +20,23 @@ public class JobController {
     private final JobQueryService jobQueryService;
 
     @GetMapping
-    public JobListResponse getAllJobs() {
-        return jobQueryService.findAllJobs();
+    public JobListResponse getAllJobs(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String location) {
+        return jobQueryService.findFilteredJobs(category, location);
     }
+
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public JobResponse createJob(Authentication authentication, @Valid @RequestBody JobDto jobDto) {
-        String email = authentication.getName();
-        return jobCommandService.createJob(email, jobDto);
+        return jobCommandService.createJob(authentication.getName(), jobDto);
     }
+
     @PutMapping("/put/{jobId}")
-    public JobResponse updateJobPut(@PathVariable Long jobId, @Valid @RequestBody JobDto jobDto) {
+    public JobResponse updateJob(@PathVariable Long jobId, @Valid @RequestBody JobDto jobDto) {
         return jobCommandService.updateJobPut(jobId, jobDto);
     }
-    @PatchMapping("/patch/{jobId}")
-    public JobResponse updateJobPatch(@PathVariable Long jobId, @RequestBody JobDto jobDto) {
-        return jobCommandService.updateJobPatch(jobId, jobDto);
-    }
+
     @DeleteMapping("/delete/{jobId}")
     public JobResponse deleteJob(@PathVariable Long jobId) {
         return jobCommandService.deleteJob(jobId);
